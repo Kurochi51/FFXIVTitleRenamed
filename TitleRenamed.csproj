@@ -22,7 +22,7 @@ Optionally, hide a specific title.</Description>
   </PropertyGroup>
 
   <PropertyGroup>
-    <DalamudLibPath>D:\yes\Dalamud\bin\Release\</DalamudLibPath>
+    <DalamudLibPath>$(AppData)\XIVLauncher\addon\Hooks\dev</DalamudLibPath>
     <RepositoryUrl>https://github.com/yomishino/FFXIVTitleRenamed</RepositoryUrl>
   </PropertyGroup>
 
