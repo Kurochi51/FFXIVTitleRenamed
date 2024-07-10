@@ -2,12 +2,14 @@ using TitleRenamed.Entries;
 using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
 using System;
+using Dalamud.Game.Gui.NamePlate;
+using System.Collections.Generic;
 
 namespace TitleRenamed
 {
     public partial class Plugin : IDalamudPlugin
     {
-        internal static DalamudPluginInterface PluginInterface { get; private set; } = null!;
+        internal static IDalamudPluginInterface PluginInterface { get; private set; } = null!;
         internal static ICommandManager CommandMgr { get; private set; } = null!;
         internal static IDataManager DataMgr { get; private set; } = null!;
         internal static IGameGui GameGui { get; private set; } = null!;
@@ -34,20 +36,17 @@ namespace TitleRenamed
             set
             {
                 enabled = value;
-                if (value)
-                    npHelper?.EnableHook();
-                else
-                    npHelper?.DisableHook();
             }
         }
         private bool inConfig = false;
 
-        public Plugin(DalamudPluginInterface _dalamudPluginInterface,
+        public Plugin(IDalamudPluginInterface _dalamudPluginInterface,
             ICommandManager _commandManager,
             IDataManager _dataManager,
             IGameGui _gameGui,
             IChatGui _chatGui,
             IPluginLog _pluginLog,
+            INamePlateGui _nameplateGui,
             IGameInteropProvider _gameInteropProvider)
         {
             PluginInterface = _dalamudPluginInterface;
@@ -60,7 +59,7 @@ namespace TitleRenamed
             this.config = PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
 
 
-            npHelper = new(renameMap);
+            npHelper = new(renameMap, _nameplateGui, PluginLog);
             _gameInteropProvider.InitializeFromAttributes(npHelper);
 
             AddCommands();
