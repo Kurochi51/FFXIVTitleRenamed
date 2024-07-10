@@ -2,8 +2,6 @@ using TitleRenamed.Entries;
 using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
 using System;
-using Dalamud.Game.Gui.NamePlate;
-using System.Collections.Generic;
 
 namespace TitleRenamed
 {
@@ -36,6 +34,7 @@ namespace TitleRenamed
             set
             {
                 enabled = value;
+                npHelper.ignoreUpdates = !enabled;
             }
         }
         private bool inConfig = false;
@@ -59,7 +58,7 @@ namespace TitleRenamed
             this.config = PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
 
 
-            npHelper = new(renameMap, _nameplateGui, PluginLog);
+            npHelper = new(renameMap, _nameplateGui);
             _gameInteropProvider.InitializeFromAttributes(npHelper);
 
             AddCommands();
