@@ -13,12 +13,14 @@ namespace TitleRenamed
     {
         private readonly TitleRenameMap renameMap;
         private readonly INamePlateGui nameplateGui;
+        private readonly IClientState clientState;
 
         public bool ignoreUpdates = false;
 
-        internal NameplateHelper(TitleRenameMap map, INamePlateGui _nameplateGui)
+        internal NameplateHelper(TitleRenameMap map, INamePlateGui _nameplateGui, IClientState _clientState)
         {
             nameplateGui = _nameplateGui;
+            clientState = _clientState;
             renameMap = map ?? throw new ArgumentNullException(paramName: nameof(map));
 
             nameplateGui.OnNamePlateUpdate += OnNameplateUpdate;
@@ -26,22 +28,22 @@ namespace TitleRenamed
 
         private void OnNameplateUpdate(INamePlateUpdateContext context, IReadOnlyList<INamePlateUpdateHandler> handlers)
         {
-            if (ignoreUpdates || context.AddonAddress == nint.Zero)
+            if (ignoreUpdates || context.AddonAddress == nint.Zero || clientState.LocalPlayer is not { } player)
             {
                 return;
             }
-            foreach (var handle in handlers)
+            foreach (var handler in handlers)
             {
-                if (handle.NamePlateKind is not NamePlateKind.PlayerCharacter)
+                if (handler.NamePlateKind is not NamePlateKind.PlayerCharacter || handler.GameObjectId != player.GameObjectId)
                 {
                     continue;
                 }
-                if (handle.Title is null || !handle.DisplayTitle || handle.Title == SeString.Empty)
+                if (handler.Title is null || !handler.DisplayTitle || handler.Title == SeString.Empty)
                 {
                     continue;
                 }
-                string before = $"Before: {handle.Title.TextValue}, prefix:{handle.IsPrefixTitle}, display:{handle.DisplayTitle}";
-                bool modified = ModifyNamePlateTitle(handle);
+                string before = $"Before: {handler.Title.TextValue}, prefix:{handler.IsPrefixTitle}, display:{handler.DisplayTitle}";
+                bool modified = ModifyNamePlateTitle(handler);
 
 #if DEBUG
                 if (modified)

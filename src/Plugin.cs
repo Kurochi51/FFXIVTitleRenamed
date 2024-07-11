@@ -46,6 +46,7 @@ namespace TitleRenamed
             IChatGui _chatGui,
             IPluginLog _pluginLog,
             INamePlateGui _nameplateGui,
+            IClientState _clientState,
             IGameInteropProvider _gameInteropProvider)
         {
             PluginInterface = _dalamudPluginInterface;
@@ -57,8 +58,7 @@ namespace TitleRenamed
 
             this.config = PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
 
-
-            npHelper = new(renameMap, _nameplateGui);
+            npHelper = new(renameMap, _nameplateGui, _clientState);
             _gameInteropProvider.InitializeFromAttributes(npHelper);
 
             AddCommands();
