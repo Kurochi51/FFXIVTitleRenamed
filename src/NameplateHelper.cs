@@ -38,7 +38,7 @@ namespace TitleRenamed
                 {
                     continue;
                 }
-                if (handler.Title is null || !handler.DisplayTitle || handler.Title == SeString.Empty)
+                if (!handler.DisplayTitle || handler.Title.Payloads.Count <= 0)
                 {
                     continue;
                 }
@@ -60,11 +60,6 @@ namespace TitleRenamed
             string oldTitle = handle.Title.TextValue.Trim(ClientStringHelper.TitleLeftBracket).Trim(ClientStringHelper.TitleRightBracket);
             if (!renameMap.TryGetValue(oldTitle, out var renameEntry) || renameEntry is null || !renameEntry.RenameEnabled)
             {
-                return false;
-            }
-            if (renameEntry.TitleString.IsDisposed)
-            {
-                Util.LogError($"Renaming \"{oldTitle}\" to {renameEntry.RenamedTitle} failed: TitleString disposed");
                 return false;
             }
             handle.TitleParts.Text = new SeString(new TextPayload(renameEntry.RenamedTitle));
