@@ -1,7 +1,8 @@
-using TitleRenamed.Entries;
+using System;
+
 using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
-using System;
+using TitleRenamed.Entries;
 
 namespace TitleRenamed
 {
@@ -24,7 +25,7 @@ namespace TitleRenamed
 #endif
 
         private readonly NameplateHelper npHelper;
-        private readonly TitleRenameMap renameMap = new();
+        private readonly TitleRenameMap renameMap = [];
         private readonly Configuration config = null!;
 
         private bool enabled = false;

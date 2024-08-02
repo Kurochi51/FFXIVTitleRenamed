@@ -1,11 +1,10 @@
-using TitleRenamed.Entries;
-using TitleRenamed.Strings;
+using System;
+using System.Collections.Generic;
+
 using Dalamud.Plugin.Services;
 using Dalamud.Game.Gui.NamePlate;
-using Dalamud.Game.Text.SeStringHandling;
-using Dalamud.Game.Text.SeStringHandling.Payloads;
-using System.Collections.Generic;
-using System;
+using TitleRenamed.Entries;
+using TitleRenamed.Strings;
 
 namespace TitleRenamed
 {
@@ -62,7 +61,7 @@ namespace TitleRenamed
             {
                 return false;
             }
-            handle.TitleParts.Text = new SeString(new TextPayload(renameEntry.RenamedTitle));
+            handle.TitleParts.Text = renameEntry.TitleString;
             handle.IsPrefixTitle = renameEntry.IsPrefixTitle;
             handle.DisplayTitle = handle.DisplayTitle && renameEntry.ToDisplay;
             return true;

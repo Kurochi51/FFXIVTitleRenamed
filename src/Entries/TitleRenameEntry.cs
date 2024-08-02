@@ -15,13 +15,13 @@ namespace TitleRenamed.Entries
                 renamedTitle = value ?? string.Empty;
                 TitleString = !renamedTitle.IsNullOrWhitespace()
                     ? new SeString(new TextPayload(renamedTitle))
-                    : new SeString();
+                    : SeString.Empty;
             }
         }
         public bool IsPrefixTitle { get; internal set; }
         public bool ToDisplay { get; internal set; }
         public bool RenameEnabled { get; internal set; }
-        internal SeString TitleString { get; private set; }
+        internal SeString TitleString { get; private set; } = SeString.Empty;
 
 
         public TitleRenameEntry(string renamed, bool isPrefix, bool toDisplay, bool enabled)
@@ -30,9 +30,6 @@ namespace TitleRenamed.Entries
             IsPrefixTitle = isPrefix;
             ToDisplay = toDisplay;
             RenameEnabled = enabled;
-            TitleString = !renamed.IsNullOrWhitespace()
-                    ? new SeString(new TextPayload(renamed))
-                    : new SeString();
         }
 
         public TitleRenameEntry(TitleRenameSaveEntry entry)
